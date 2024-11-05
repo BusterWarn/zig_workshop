@@ -39,7 +39,7 @@ const Input = struct {
     groups: ArrayList(GnomeGroup),
     allocator: std.mem.Allocator,
 
-    pub fn deinit(self: *const Input) void {
+    fn deinit(self: *const Input) void {
         for (self.groups.items) |group| {
             group.deinit(self.allocator);
         }
@@ -62,7 +62,7 @@ fn readInput(allocator: std.mem.Allocator) !Input {
     var i: usize = 0;
     while (i < n) : (i += 1) {
         line = try reader.readUntilDelimiter(&buffer, '\n');
-        var it = std.mem.tokenize(u8, line, " ");
+        var it = std.mem.tokenizeAny(u8, line, " ");
 
         // Read group size
         const size = try std.fmt.parseInt(usize, it.next().?, 10);
@@ -88,16 +88,12 @@ fn readInput(allocator: std.mem.Allocator) !Input {
 }
 
 fn solve(group: GnomeGroup) usize {
-    // TODO: Remember to remove this debug print before submission
-    print("Processing group with {d} gnomes: ", .{group.size});
-    for (group.gnomes) |gnome| {
-        print("{d} ", .{gnome});
+    for (group.gnomes[1..], 1..) |curr_gnome, i| {
+        const prev_gnome = group.gnomes[i - 1];
+        if (prev_gnome + 1 != curr_gnome) return i + 1; // adding one since it is 0 inxexed and the result should be 1 indexed
     }
-    print("\n", .{});
 
-    // TODO: Implement actual solution
-    // For now, return dummy value
-    return 1;
+    unreachable;
 }
 
 test "sample test case 1" {

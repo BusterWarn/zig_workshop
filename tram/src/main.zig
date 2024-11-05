@@ -42,7 +42,7 @@ pub fn readInput(allocator: std.mem.Allocator) !InputData {
     var i: usize = 0;
     while (i < n) : (i += 1) {
         const line = try stdin.readUntilDelimiter(&buffer, '\n');
-        var iter = std.mem.split(u8, line, " ");
+        var iter = std.mem.splitAny(u8, line, " ");
         const x = try std.fmt.parseInt(i32, iter.next().?, 10);
         const y = try std.fmt.parseInt(i32, iter.next().?, 10);
         coordinates[i] = Coordinate{ .x = x, .y = y };
@@ -77,7 +77,7 @@ test "sample test case 1" {
         .{ .x = 2, .y = 2 },
         .{ .x = 3, .y = 3 },
     };
-    var coordinates = try allocator.alloc(Coordinate, test_coordinates.len);
+    const coordinates = try allocator.alloc(Coordinate, test_coordinates.len);
     @memcpy(coordinates, &test_coordinates);
 
     const input = InputData{
@@ -98,7 +98,7 @@ test "sample test case 2" {
         .{ .x = 1, .y = 0 },
         .{ .x = 1, .y = 1 },
     };
-    var coordinates = try allocator.alloc(Coordinate, test_coordinates.len);
+    const coordinates = try allocator.alloc(Coordinate, test_coordinates.len);
     @memcpy(coordinates, &test_coordinates);
 
     const input = InputData{
@@ -119,7 +119,7 @@ test "sample test case 3" {
         .{ .x = 1, .y = 1 },
         .{ .x = 1, .y = 0 },
     };
-    var coordinates = try allocator.alloc(Coordinate, test_coordinates.len);
+    const coordinates = try allocator.alloc(Coordinate, test_coordinates.len);
     @memcpy(coordinates, &test_coordinates);
 
     const input = InputData{

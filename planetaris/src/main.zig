@@ -29,7 +29,7 @@ fn readInput(allocator: std.mem.Allocator) !ProblemInput {
 
     // Read first line with n and a
     if (try stdin.readUntilDelimiterOrEof(&buf, '\n')) |line| {
-        var iter = std.mem.split(u8, line, " ");
+        var iter = std.mem.splitAny(u8, line, " ");
         const n = try std.fmt.parseInt(i32, iter.next() orelse return error.InvalidInput, 10);
         const a = try std.fmt.parseInt(i32, iter.next() orelse return error.InvalidInput, 10);
 
@@ -38,7 +38,7 @@ fn readInput(allocator: std.mem.Allocator) !ProblemInput {
             var enemy_ships = std.ArrayList(i32).init(allocator);
             defer enemy_ships.deinit();
 
-            var numbers = std.mem.split(u8, second_line, " ");
+            var numbers = std.mem.splitAny(u8, second_line, " ");
             while (numbers.next()) |num_str| {
                 const num = try std.fmt.parseInt(i32, num_str, 10);
                 try enemy_ships.append(num);

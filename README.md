@@ -135,7 +135,7 @@ defer allocator.free(c);
 const contains = std.mem.indexOf(u8, haystack, needle) != null;
 
 // Split
-var iterator = std.mem.split(u8, "a,b,c", ",");
+var iterator = std.mem.splitAny(u8, "a,b,c", ",");
 while (iterator.next()) |token| {
     // use token
 }

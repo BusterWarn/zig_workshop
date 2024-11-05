@@ -43,7 +43,7 @@ pub fn readInput(allocator: std.mem.Allocator) !Input {
         var j: usize = 0;
         while (j < r) : (j += 1) {
             const road_line = try reader.readUntilDelimiter(&line_buf, '\n');
-            var road_it = std.mem.split(u8, road_line, " ");
+            var road_it = std.mem.splitAny(u8, road_line, " ");
             const start = try std.fmt.parseInt(usize, road_it.next() orelse return error.InvalidInput, 10);
             const end = try std.fmt.parseInt(usize, road_it.next() orelse return error.InvalidInput, 10);
             try roads.append(.{ start, end });
