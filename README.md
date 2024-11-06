@@ -99,6 +99,25 @@ try list.append(42);
 try list.appendSlice(&[_]i32{ 1, 2, 3 });
 ```
 
+#### Copy and sort ArrayList
+```zig
+var enemy_ships_sorted = input.enemy_ships;
+std.mem.sort(i32, enemy_ships_sorted, {}, std.sort.asc(i32));
+```
+
+#### Iterate through a matrix
+
+```zig
+fn iterateMatrix1(board: [][]const i32) void {
+    for (board, 0..) |row, y| {
+        for (row, 0..) |cell, x| {
+            // Access position (x,y) with value 'cell'
+            std.debug.print("Position ({d},{d}) has value {d}\n", .{x, y, cell});
+        }
+    }
+}
+```
+
 #### HashMaps
 ```zig
 var map = std.AutoHashMap(i32, []const u8).init(allocator);
