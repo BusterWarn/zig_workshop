@@ -30,18 +30,20 @@ pub fn main() !void {
 }
 
 pub fn readInput(allocator: std.mem.Allocator) !InputData {
-    var buffer: [1024]u8 = undefined;
+    var buffer: [1024 * 1024]u8 = undefined;
     const stdin = std.io.getStdIn().reader();
+    var buf_reader = std.io.bufferedReader(stdin);
+    var reader = buf_reader.reader();
 
     // Read N
-    const n_line = try stdin.readUntilDelimiter(&buffer, '\n');
+    const n_line = (try reader.readUntilDelimiterOrEof(&buffer, '\n')).?;
     const n = try std.fmt.parseInt(u32, n_line, 10);
 
     // Read coordinates
     var coordinates = try allocator.alloc(Coordinate, n);
     var i: usize = 0;
     while (i < n) : (i += 1) {
-        const line = try stdin.readUntilDelimiter(&buffer, '\n');
+        const line = (try reader.readUntilDelimiterOrEof(&buffer, '\n')).?;
         var iter = std.mem.splitAny(u8, line, " ");
         const x = try std.fmt.parseInt(i32, iter.next().?, 10);
         const y = try std.fmt.parseInt(i32, iter.next().?, 10);

@@ -25,10 +25,12 @@ pub fn main() !void {
 
 fn readInput(allocator: std.mem.Allocator) !ProblemInput {
     const stdin = std.io.getStdIn().reader();
-    var buf: [1024]u8 = undefined;
+    var buf_reader = std.io.bufferedReader(stdin);
+    var reader = buf_reader.reader();
+    var buf: [1024 * 1024]u8 = undefined;
 
     // Read first line with n and a
-    if (try stdin.readUntilDelimiterOrEof(&buf, '\n')) |line| {
+    if (try reader.readUntilDelimiterOrEof(&buf, '\n')) |line| {
         var iter = std.mem.splitAny(u8, line, " ");
         const n = try std.fmt.parseInt(i32, iter.next() orelse return error.InvalidInput, 10);
         const a = try std.fmt.parseInt(i32, iter.next() orelse return error.InvalidInput, 10);

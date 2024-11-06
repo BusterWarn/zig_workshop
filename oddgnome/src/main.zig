@@ -48,11 +48,13 @@ const Input = struct {
 };
 
 fn readInput(allocator: std.mem.Allocator) !Input {
-    var buffer: [1024]u8 = undefined;
-    const reader = std.io.getStdIn().reader();
+    var buffer: [1024 * 1024]u8 = undefined;
+    const stdin = std.io.getStdIn().reader();
+    var buf_reader = std.io.bufferedReader(stdin);
+    var reader = buf_reader.reader();
 
     // Read number of groups
-    var line = try reader.readUntilDelimiter(&buffer, '\n');
+    var line = (try reader.readUntilDelimiterOrEof(&buffer, '\n')).?;
     const n = try std.fmt.parseInt(usize, line, 10);
 
     // Initialize groups array
@@ -61,7 +63,7 @@ fn readInput(allocator: std.mem.Allocator) !Input {
     // Read each group
     var i: usize = 0;
     while (i < n) : (i += 1) {
-        line = try reader.readUntilDelimiter(&buffer, '\n');
+        line = (try reader.readUntilDelimiterOrEof(&buffer, '\n')).?;
         var it = std.mem.tokenizeAny(u8, line, " ");
 
         // Read group size

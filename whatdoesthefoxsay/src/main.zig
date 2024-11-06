@@ -30,9 +30,11 @@ pub fn main() !void {
     defer line_buf.deinit();
 
     const stdin = std.io.getStdIn().reader();
+    var buf_reader = std.io.bufferedReader(stdin);
+    var reader = buf_reader.reader();
 
     // Read number of test cases
-    try stdin.readUntilDelimiterArrayList(&line_buf, '\n', 1024);
+    try reader.readUntilDelimiterArrayList(&line_buf, '\n', 1024);
     const num_cases = try std.fmt.parseInt(usize, line_buf.items, 10);
 
     var i: usize = 0;
@@ -40,7 +42,7 @@ pub fn main() !void {
         line_buf.clearRetainingCapacity();
 
         // Read recording
-        try stdin.readUntilDelimiterArrayList(&line_buf, '\n', 1024);
+        try reader.readUntilDelimiterArrayList(&line_buf, '\n', 1024);
         var test_case = TestCase{
             .recording = try allocator.dupe(u8, line_buf.items),
             .known_animals = &[_]Animal{},
@@ -53,7 +55,7 @@ pub fn main() !void {
 
         while (true) {
             line_buf.clearRetainingCapacity();
-            try stdin.readUntilDelimiterArrayList(&line_buf, '\n', 1024);
+            try reader.readUntilDelimiterArrayList(&line_buf, '\n', 1024);
 
             if (std.mem.eql(u8, line_buf.items, "what does the fox say?")) break;
 

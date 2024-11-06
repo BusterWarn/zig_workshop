@@ -33,7 +33,7 @@ pub fn readInput(allocator: std.mem.Allocator) !Input {
     var buf_reader = std.io.bufferedReader(stdin);
     var reader = buf_reader.reader();
 
-    var buf: [1024]u8 = undefined;
+    var buf: [1024 * 1024]u8 = undefined;
 
     // Read n
     const line = try reader.readUntilDelimiter(&buf, '\n');

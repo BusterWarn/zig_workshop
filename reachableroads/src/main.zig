@@ -18,7 +18,7 @@ pub fn readInput(allocator: std.mem.Allocator) !Input {
     var reader = buf.reader();
 
     // Read number of cities
-    var line_buf: [1024]u8 = undefined;
+    var line_buf: [1024 * 1024]u8 = undefined;
     const first_line = try reader.readUntilDelimiter(&line_buf, '\n');
     const n = try std.fmt.parseInt(usize, first_line, 10);
 

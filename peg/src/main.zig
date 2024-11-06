@@ -22,6 +22,9 @@ pub fn main() !void {
 // Reads the input and returns a Board struct
 fn readInput(allocator: std.mem.Allocator) !Board {
     const stdin = std.io.getStdIn().reader();
+    var buf_reader = std.io.bufferedReader(stdin);
+    var reader = buf_reader.reader();
+
     var buf = std.ArrayList(u8).init(allocator);
     defer buf.deinit();
 
@@ -30,7 +33,7 @@ fn readInput(allocator: std.mem.Allocator) !Board {
     // Read 7 lines
     var row: usize = 0;
     while (row < 7) : (row += 1) {
-        try stdin.readUntilDelimiterArrayList(&buf, '\n', 1024);
+        try reader.readUntilDelimiterArrayList(&buf, '\n', 1024);
 
         // Copy the line into the board grid
         var col: usize = 0;
